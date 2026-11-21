@@ -154,9 +154,9 @@ body {
 .policy-header-bar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .policy-header-bar h3 {
@@ -173,30 +173,32 @@ body {
 
 .policy-toggle-btn {
   background-color: #111518;
-  border: 1px solid #3a434c;
-  color: var(--text-main);
-  padding: 6px 10px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 7px 12px;
   border-radius: 8px;
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
 .policy-toggle-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  background-color: var(--accent);
+  color: #111518;
 }
 
 .policy-collapsible {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.35s ease, opacity 0.3s ease;
   opacity: 0;
+  margin-bottom: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-bottom 0.3s ease;
 }
 
 .policy-collapsible.open {
-  max-height: 360px;
+  max-height: 1200px;
   opacity: 1;
   margin-bottom: 14px;
 }
