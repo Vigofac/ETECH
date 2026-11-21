@@ -74,7 +74,6 @@
             <g fill="#121417" stroke="#08090a" stroke-width="2">
               <rect x="114" y="238" width="54" height="76" rx="12"/>
               <rect x="472" y="238" width="54" height="76" rx="12"/>
-              <!-- Labrado sutil -->
               <line x1="126" y1="242" x2="126" y2="310" stroke="#1e2226" stroke-width="2"/>
               <line x1="141" y1="242" x2="141" y2="310" stroke="#1e2226" stroke-width="2"/>
               <line x1="499" y1="242" x2="499" y2="310" stroke="#1e2226" stroke-width="2"/>
@@ -88,10 +87,8 @@
 
             <!-- Retrovisores exteriores (Izquierdo y Derecho) -->
             <g>
-              <!-- Izquierdo -->
               <path d="M156 142 L132 138 L124 126 C124 118 134 114 148 116 L162 124 Z" fill="#181b1e"/>
               <path d="M126 125 C127 119 135 116 147 118 L158 124 L126 128 Z" class="car-paint" fill="#4b5842"/>
-              <!-- Derecho -->
               <path d="M484 142 L508 138 L516 126 C516 118 506 114 492 116 L478 124 Z" fill="#181b1e"/>
               <path d="M514 125 C513 119 505 116 493 118 L482 124 L514 128 Z" class="car-paint" fill="#4b5842"/>
             </g>
@@ -99,11 +96,10 @@
             <!-- Cabina y Parabrisas -->
             <path d="M184 76 L456 76 L484 138 L156 138 Z" class="car-paint" fill="#4b5842"/>
             <path d="M193 82 L447 82 L470 134 L170 134 Z" fill="url(#windshield-glass)" stroke="#111" stroke-width="2"/>
-            <!-- Limpiaparabrisas -->
             <path d="M215 133 L305 126 M335 133 L425 127" stroke="#0d0f12" stroke-width="3" stroke-linecap="round"/>
 
-            <!-- Carrocería Frontal Principal (Capó esculpido + Guardabarros ensanchados) -->
-            <path id="car-main-body" class="car-paint" fill="#4b5842" d="
+            <!-- Carrocería Frontal Principal -->
+            <path class="car-paint" fill="#4b5842" d="
               M 156 138
               L 484 138
               L 516 172
@@ -115,7 +111,7 @@
               Z
             "/>
 
-            <!-- Capa de iluminación y volumen metálico sobre carrocería -->
+            <!-- Capa de iluminación y volumen metálico -->
             <path fill="url(#metallic-sheen)" d="
               M 156 138
               L 484 138
@@ -132,13 +128,12 @@
             <path d="M196 140 L214 174 M444 140 L426 174" stroke="#000000" stroke-opacity="0.28" stroke-width="3" fill="none"/>
             <path d="M250 140 L258 172 M390 140 L382 172" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" fill="none"/>
 
-            <!-- Pasos de rueda negros tipo Starkle® / Off-road -->
+            <!-- Pasos de rueda negros -->
             <path d="M124 172 L112 228 L120 264 L134 264 L126 226 L136 178 Z" fill="#1a1d21"/>
             <path d="M516 172 L528 228 L520 264 L506 264 L514 226 L504 178 Z" fill="#1a1d21"/>
 
-            <!-- Parrilla Frontal Superior E-Tech con detalles blancos/cromados -->
+            <!-- Parrilla Frontal Superior E-Tech -->
             <path d="M204 174 L436 174 L424 198 L216 198 Z" fill="#121417" stroke="#2a2e33" stroke-width="1.5"/>
-            <!-- Segmentos horizontales estilizados de la parrilla -->
             <g fill="#d1d8e0">
               <rect x="228" y="183" width="18" height="4" rx="1"/>
               <rect x="256" y="183" width="18" height="4" rx="1"/>
@@ -148,34 +143,28 @@
               <rect x="394" y="183" width="18" height="4" rx="1"/>
             </g>
 
-            <!-- Emblema Central Renault / Duster -->
+            <!-- Emblema Central -->
             <g transform="translate(320, 186)">
               <polygon points="0,-11 10,0 0,11 -10,0" fill="none" stroke="#f1f2f6" stroke-width="2.5"/>
               <polygon points="0,-6 5,0 0,6 -5,0" fill="none" stroke="#00d2d3" stroke-width="1.5"/>
             </g>
 
             <!-- Faros Delanteros con firma LED en "Y" -->
-            <!-- Faro Izquierdo -->
             <g>
               <path d="M138 174 L204 174 L214 198 L146 198 Z" fill="#0d0f12" stroke="#2c3035" stroke-width="1.5"/>
-              <!-- Proyector LED -->
               <circle cx="186" cy="186" r="7" fill="#a4b0be"/>
               <circle cx="186" cy="186" r="4" fill="#ffffff" filter="url(#led-glow)"/>
-              <!-- Firma luminosa en Y -->
               <path d="M144 180 L158 186 L144 192 M158 186 L174 186" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#led-glow)"/>
             </g>
 
-            <!-- Faro Derecho -->
             <g>
               <path d="M502 174 L436 174 L426 198 L494 198 Z" fill="#0d0f12" stroke="#2c3035" stroke-width="1.5"/>
-              <!-- Proyector LED -->
               <circle cx="454" cy="186" r="7" fill="#a4b0be"/>
               <circle cx="454" cy="186" r="4" fill="#ffffff" filter="url(#led-glow)"/>
-              <!-- Firma luminosa en Y -->
               <path d="M496 180 L482 186 L496 192 M482 186 L466 186" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#led-glow)"/>
             </g>
 
-            <!-- Entradas de aire verticales laterales (Cortinas aerodinámicas) -->
+            <!-- Entradas de aire verticales laterales -->
             <path d="M142 208 L164 208 L168 252 L146 252 Z" fill="#14171a"/>
             <circle cx="156" cy="240" r="5" fill="#dfe4ea" filter="url(#led-glow)"/>
 
@@ -184,36 +173,30 @@
 
             <!-- Parachoques Inferior Oscuro y Rejilla Central -->
             <path d="M180 212 L460 212 L472 276 L168 276 Z" fill="#181b20"/>
-            <!-- Rejilla inferior -->
             <path d="M210 238 L430 238 L436 264 L204 264 Z" fill="#0d0f12"/>
             <line x1="208" y1="247" x2="432" y2="247" stroke="#22262b" stroke-width="2"/>
             <line x1="206" y1="256" x2="434" y2="256" stroke="#22262b" stroke-width="2"/>
 
-            <!-- Skid Plate (Protector inferior gris satinado Off-Road) -->
+            <!-- Skid Plate (Protector inferior gris satinado) -->
             <path d="M188 266 L452 266 L444 286 L196 286 Z" fill="#8395a7" stroke="#576574" stroke-width="1.5"/>
-            <!-- Insignia E-TECH en el skid plate -->
             <rect x="386" y="271" width="44" height="10" rx="2" fill="#111"/>
             <text x="408" y="278.5" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#00d2d3" text-anchor="middle">E-TECH</text>
 
-            <!-- PLACA COLOMBIANA REAL INTEGRADA EN EL PARACHOQUES DELANTERO -->
+            <!-- PLACA COLOMBIANA INTEGRADA EN EL PARACHOQUES DELANTERO -->
             <g transform="translate(263, 211)">
-              <!-- Marco negro del portaplacas -->
               <rect x="-2" y="-2" width="118" height="38" rx="4" fill="#0a0c0e"/>
-              <!-- Lámina amarilla reflectiva -->
               <rect x="0" y="0" width="114" height="34" rx="3" fill="#feca57" stroke="#111111" stroke-width="2"/>
-              <!-- Borde interno -->
               <rect x="3" y="3" width="108" height="28" rx="1.5" fill="none" stroke="#111111" stroke-width="0.8"/>
-              <!-- Texto dinámico de la placa -->
-              <text id="svg-plate-text" x="57" y="21" font-family="'Courier New', Courier, monospace" font-size="18" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1.5">ABC-123</text>
+              <text class="plate-text-target" x="57" y="21" font-family="'Courier New', Courier, monospace" font-size="18" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1.5">ABC-123</text>
               <text x="57" y="29.5" font-family="Arial, sans-serif" font-size="5.5" font-weight="800" fill="#111111" text-anchor="middle" letter-spacing="1.5">COLOMBIA</text>
             </g>
           </svg>
         </div>
 
         <div class="specs-badge">
-          <span id="preview-modelo">Duster E-Tech</span> • 
-          <span id="preview-transmision">Automática</span> • 
-          <span id="preview-color-name">Verde</span>
+          <span class="spec-modelo">Duster E-Tech</span> • 
+          <span class="spec-transmision">Automática</span> • 
+          <span class="spec-color">Verde</span>
         </div>
       </div>
 

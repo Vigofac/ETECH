@@ -14,12 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const celularInput = document.getElementById("celular");
   const aceptoCheck = document.getElementById("acepto-politica");
 
-  const svgPlateText = document.getElementById("svg-plate-text");
-  const previewModelo = document.getElementById("preview-modelo");
-  const previewTransmision = document.getElementById("preview-transmision");
-  const previewColorName = document.getElementById("preview-color-name");
-  const carPaintElements = document.querySelectorAll(".car-paint");
-
   const form = document.getElementById("etech-form");
   const btnSubmit = document.getElementById("btn-submit");
   const registroSection = document.getElementById("registro-section");
@@ -28,6 +22,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmPhone = document.getElementById("confirm-phone");
 
   let currentStep = 0;
+
+  function formatearPlaca(raw) {
+    let val = (raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (val.length > 3) {
+      val = val.slice(0, 3) + "-" + val.slice(3, 6);
+    }
+    return val || "ABC-123";
+  }
+
+  function obtenerColorActual() {
+    const checked = document.querySelector('input[name="color"]:checked');
+    return {
+      nombre: checked ? checked.value : "Verde",
+      hex: checked ? checked.getAttribute("data-hex") : "#4b5842"
+    };
+  }
+
+  function obtenerTransmisionActual() {
+    const checked = document.querySelector('input[name="transmision"]:checked');
+    return checked ? checked.value : "Automática";
+  }
+
+  function aplicarEstadoVehiculo(container, datosOverride = null) {
+    const placa = datosOverride ? datosOverride.placa : formatearPlaca(placaInput.value);
+    const color = datosOverride ? datosOverride.color : obtenerColorActual();
+    const transmision = datosOverride ? datosOverride.transmision : obtenerTransmisionActual();
+    const modelo = datosOverride ? datosOverride.modelo : modeloSelect.value;
+
+    const svg = container.querySelector("svg");
+    if (svg) {
+      svg.querySelectorAll(".car-paint").forEach((el) => {
+        el.setAttribute("fill", color.hex);
+        el.style.fill = color.hex;
+      });
+      svg.querySelectorAll(".plate-text-target").forEach((textEl) => {
+        textEl.textContent = placa;
+      });
+    }
+
+    const modEl = container.querySelector(".spec-modelo");
+    const transEl = container.querySelector(".spec-transmision");
+    const colEl = container.querySelector(".spec-color");
+
+    if (modEl) modEl.textContent = modelo;
+    if (transEl) transEl.textContent = transmision;
+    if (colEl) colEl.textContent = color.nombre;
+  }
+
+  function actualizarVistaPrevia() {
+    const previewBox = document.querySelector("#registro-section .preview-box");
+    aplicarEstadoVehiculo(previewBox);
+  }
 
   function showStep(index) {
     steps.forEach((step, i) => {
@@ -107,51 +153,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Actualizar placa integrada en el parachoques delantero
-  placaInput.addEventListener("input", () => {
-    let val = placaInput.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    if (val.length > 3) {
-      val = val.slice(0, 3) + "-" + val.slice(3, 6);
-    }
-    svgPlateText.textContent = val || "ABC-123";
-  });
+  placaInput.addEventListener("input", actualizarVistaPrevia);
+  modeloSelect.addEventListener("change", actualizarVistaPrevia);
+  transmisionRadios.forEach((radio) => radio.addEventListener("change", actualizarVistaPrevia));
+  colorRadios.forEach((radio) => radio.addEventListener("change", actualizarVistaPrevia));
 
-  // Actualizar modelo
-  modeloSelect.addEventListener("change", () => {
-    previewModelo.textContent = modeloSelect.value;
-  });
-
-  // Actualizar transmisión
-  transmisionRadios.forEach((radio) => {
-    radio.addEventListener("change", (e) => {
-      previewTransmision.textContent = e.target.value;
-    });
-  });
-
-  // Actualizar color en carrocería y espejos retrovisores (Verde, Gris o Beige)
-  colorRadios.forEach((radio) => {
-    radio.addEventListener("change", (e) => {
-      const hex = e.target.getAttribute("data-hex");
-      carPaintElements.forEach((el) => el.setAttribute("fill", hex));
-      previewColorName.textContent = e.target.value;
-    });
-  });
-
-  // Envío hacia Google Drive
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!validateStep(currentStep)) return;
 
-    const selectedColor = document.querySelector('input[name="color"]:checked').value;
-    const selectedTransmision = document.querySelector('input[name="transmision"]:checked').value;
+    const datosConfirmados = {
+      placa: formatearPlaca(placaInput.value),
+      color: obtenerColorActual(),
+      transmision: obtenerTransmisionActual(),
+      modelo: modeloSelect.value,
+      celular: celularInput.value.trim()
+    };
 
     const payload = {
       fecha: new Date().toLocaleString("es-CO"),
-      placa: svgPlateText.textContent,
-      modelo: modeloSelect.value,
-      transmision: selectedTransmision,
-      color: selectedColor,
-      celular: celularInput.value.trim(),
+      placa: datosConfirmados.placa,
+      modelo: datosConfirmados.modelo,
+      transmision: datosConfirmados.transmision,
+      color: datosConfirmados.color.nombre,
+      celular: datosConfirmados.celular,
       aceptoPolitica: aceptoCheck.checked ? "Sí" : "No"
     };
 
@@ -168,14 +193,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Clonar el gráfico frontal personalizado a la pantalla de bienvenida
       const carStageClone = document.getElementById("car-stage").cloneNode(true);
-      const specsClone = document.querySelector(".specs-badge").cloneNode(true);
+      const specsClone = document.querySelector("#registro-section .specs-badge").cloneNode(true);
+
       finalCarContainer.innerHTML = "";
       finalCarContainer.appendChild(carStageClone);
       finalCarContainer.appendChild(specsClone);
 
-      confirmPhone.textContent = payload.celular;
+      // Aplicar explícitamente los valores confirmados en la pantalla final
+      aplicarEstadoVehiculo(finalCarContainer, datosConfirmados);
+
+      confirmPhone.textContent = datosConfirmados.celular;
 
       registroSection.classList.add("hidden");
       successSection.classList.remove("hidden");
@@ -187,4 +215,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btnSubmit.textContent = "Finalizar Registro ✓";
     }
   });
+
+  actualizarVistaPrevia();
 });
