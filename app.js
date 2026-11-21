@@ -1,4 +1,4 @@
-// REEMPLAZA ESTA URL CON LA URL DE TU GOOGLE APPS SCRIPT
+// REEMPLAZA ESTA URL CON LA URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT (termina en /exec)
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/TU_ID_DE_IMPLEMENTACION/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,31 +27,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmPhone = document.getElementById("confirm-phone");
 
   let currentStep = 0;
+  let isSubmitting = false;
 
-  // Mostrar política al oprimir "Leer política ▼" y guardarla al oprimir "Ocultar política ▲"
-  policyCollapsible.style.display = "none";
-  togglePolicyBtn.setAttribute("aria-expanded", "false");
-  togglePolicyBtn.textContent = "Leer política ▼";
+  // 1. Control de despliegue y guardado de la política
+  if (togglePolicyBtn && policyCollapsible) {
+    policyCollapsible.style.display = "none";
+    togglePolicyBtn.setAttribute("aria-expanded", "false");
+    togglePolicyBtn.textContent = "Leer política ▼";
 
-  togglePolicyBtn.addEventListener("click", () => {
-    const estaGuardada = policyCollapsible.style.display === "none";
-    policyCollapsible.style.display = estaGuardada ? "block" : "none";
-    togglePolicyBtn.setAttribute("aria-expanded", String(estaGuardada));
-    togglePolicyBtn.textContent = estaGuardada ? "Ocultar política ▲" : "Leer política ▼";
-  });
+    togglePolicyBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const estaGuardada = policyCollapsible.style.display === "none";
+      policyCollapsible.style.display = estaGuardada ? "block" : "none";
+      togglePolicyBtn.setAttribute("aria-expanded", String(estaGuardada));
+      togglePolicyBtn.textContent = estaGuardada ? "Ocultar política ▲" : "Leer política ▼";
+    });
+  }
 
-  // Habilitar el botón de avance solo cuando se aceptan ambas políticas
+  // 2. Habilitar avance solo si ambas políticas están aceptadas
   function actualizarEstadoPoliticas() {
-    const ambasAceptadas = aceptoPolitica.checked && aceptoWhatsapp.checked;
-    btnComenzar.disabled = !ambasAceptadas;
+    const ambasAceptadas = Boolean(aceptoPolitica && aceptoWhatsapp && aceptoPolitica.checked && aceptoWhatsapp.checked);
+    if (btnComenzar) {
+      btnComenzar.disabled = !ambasAceptadas;
+    }
     if (ambasAceptadas) {
-      document.getElementById("error-1").textContent = "";
+      const err1 = document.getElementById("error-1");
+      if (err1) err1.textContent = "";
     }
   }
 
-  aceptoPolitica.addEventListener("change", actualizarEstadoPoliticas);
-  aceptoWhatsapp.addEventListener("change", actualizarEstadoPoliticas);
+  if (aceptoPolitica) aceptoPolitica.addEventListener("change", actualizarEstadoPoliticas);
+  if (aceptoWhatsapp) aceptoWhatsapp.addEventListener("change", actualizarEstadoPoliticas);
 
+  // 3. Formateo y estado del vehículo
   function formatearPlaca(raw) {
     let val = (raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
     if (val.length > 3) {
@@ -74,10 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function aplicarEstadoVehiculo(container, datosOverride = null) {
-    const placa = datosOverride ? datosOverride.placa : formatearPlaca(placaInput.value);
+    if (!container) return;
+
+    const placa = datosOverride ? datosOverride.placa : formatearPlaca(placaInput ? placaInput.value : "");
     const color = datosOverride ? datosOverride.color : obtenerColorActual();
     const transmision = datosOverride ? datosOverride.transmision : obtenerTransmisionActual();
-    const modelo = datosOverride ? datosOverride.modelo : modeloSelect.value;
+    const modelo = datosOverride ? datosOverride.modelo : (modeloSelect ? modeloSelect.value : "Duster E-Tech");
 
     const svg = container.querySelector("svg");
     if (svg) {
@@ -104,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     aplicarEstadoVehiculo(previewBox);
   }
 
+  // 4. Navegación y validaciones por paso
   function showStep(index) {
     steps.forEach((step, i) => {
       step.classList.toggle("active", i === index);
@@ -113,9 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalSteps = steps.length;
     const percent = (stepNum / totalSteps) * 100;
 
-    progressFill.style.width = `${percent}%`;
-    stepIndicator.textContent = `Paso ${stepNum} de ${totalSteps}`;
-    stepTitle.textContent = steps[index].getAttribute("data-title");
+    if (progressFill) progressFill.style.width = `${percent}%`;
+    if (stepIndicator) stepIndicator.textContent = `Paso ${stepNum} de ${totalSteps}`;
+    if (stepTitle) stepTitle.textContent = steps[index].getAttribute("data-title") || "";
 
     const input = steps[index].querySelector('input[type="text"], input[type="tel"]');
     if (input) setTimeout(() => input.focus(), 150);
@@ -125,30 +136,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (index === 0) {
       const err1 = document.getElementById("error-1");
       if (!aceptoPolitica.checked || !aceptoWhatsapp.checked) {
-        err1.textContent = "Debes aceptar ambas políticas para continuar con el registro.";
+        if (err1) err1.textContent = "Debes aceptar ambas políticas para continuar con el registro.";
         return false;
       }
-      err1.textContent = "";
+      if (err1) err1.textContent = "";
     }
 
     if (index === 1) {
       const err2 = document.getElementById("error-2");
-      const rawPlaca = placaInput.value.replace(/[^A-Za-z0-9]/g, "");
+      const rawPlaca = (placaInput.value || "").replace(/[^A-Za-z0-9]/g, "");
       if (rawPlaca.length < 5) {
-        err2.textContent = "Ingresa una placa válida (ej: ABC123).";
+        if (err2) err2.textContent = "Ingresa una placa válida (ej: ABC123).";
         return false;
       }
-      err2.textContent = "";
+      if (err2) err2.textContent = "";
     }
 
     if (index === 4) {
       const err5 = document.getElementById("error-5");
-      const cleanPhone = celularInput.value.replace(/\D/g, "");
+      const cleanPhone = (celularInput.value || "").replace(/\D/g, "");
       if (cleanPhone.length < 10) {
-        err5.textContent = "Ingresa un número celular válido de al menos 10 dígitos.";
+        if (err5) err5.textContent = "Ingresa un número celular válido de al menos 10 dígitos.";
         return false;
       }
-      err5.textContent = "";
+      if (err5) err5.textContent = "";
     }
 
     return true;
@@ -156,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".next-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (validateStep(currentStep)) {
+      if (validateStep(currentStep) && currentStep < steps.length - 1) {
         currentStep++;
         showStep(currentStep);
       }
@@ -172,78 +183,108 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  form.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && currentStep < steps.length - 1) {
-      e.preventDefault();
-      if (validateStep(currentStep)) {
-        currentStep++;
-        showStep(currentStep);
+  if (form) {
+    form.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && currentStep < steps.length - 1) {
+        e.preventDefault();
+        if (validateStep(currentStep)) {
+          currentStep++;
+          showStep(currentStep);
+        }
       }
-    }
-  });
+    });
+  }
 
-  placaInput.addEventListener("input", actualizarVistaPrevia);
-  modeloSelect.addEventListener("change", actualizarVistaPrevia);
+  if (placaInput) {
+    placaInput.addEventListener("input", () => {
+      placaInput.value = placaInput.value.toUpperCase();
+      actualizarVistaPrevia();
+    });
+  }
+  if (modeloSelect) modeloSelect.addEventListener("change", actualizarVistaPrevia);
   transmisionRadios.forEach((radio) => radio.addEventListener("change", actualizarVistaPrevia));
   colorRadios.forEach((radio) => radio.addEventListener("change", actualizarVistaPrevia));
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!validateStep(currentStep)) return;
+  // 5. Envío a Google Apps Script / Google Sheets
+  async function enviarAGoogleSheet(payload) {
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TU_ID_DE_IMPLEMENTACION")) {
+      console.warn("GOOGLE_SCRIPT_URL aún no está configurada con tu URL /exec.");
+      return { skipped: true };
+    }
 
-    const datosConfirmados = {
-      placa: formatearPlaca(placaInput.value),
-      color: obtenerColorActual(),
-      transmision: obtenerTransmisionActual(),
-      modelo: modeloSelect.value,
-      celular: celularInput.value.trim()
-    };
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
 
-    const payload = {
-      fecha: new Date().toLocaleString("es-CO"),
-      placa: datosConfirmados.placa,
-      modelo: datosConfirmados.modelo,
-      transmision: datosConfirmados.transmision,
-      color: datosConfirmados.color.nombre,
-      celular: datosConfirmados.celular,
-      aceptoPoliticaDatos: aceptoPolitica.checked ? "Sí" : "No",
-      aceptoGrupoWhatsapp: aceptoWhatsapp.checked ? "Sí" : "No"
-    };
+    return { ok: true };
+  }
 
-    btnSubmit.disabled = true;
-    btnSubmit.textContent = "Guardando...";
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+      if (!validateStep(currentStep)) return;
 
-    try {
-      if (!GOOGLE_SCRIPT_URL.includes("TU_ID_DE_IMPLEMENTACION")) {
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+      isSubmitting = true;
+      const datosConfirmados = {
+        placa: formatearPlaca(placaInput.value),
+        color: obtenerColorActual(),
+        transmision: obtenerTransmisionActual(),
+        modelo: modeloSelect.value,
+        celular: celularInput.value.trim()
+      };
+
+      const payload = {
+        fecha: new Date().toLocaleString("es-CO"),
+        placa: datosConfirmados.placa,
+        modelo: datosConfirmados.modelo,
+        transmision: datosConfirmados.transmision,
+        color: datosConfirmados.color.nombre,
+        celular: datosConfirmados.celular,
+        aceptoPoliticaDatos: aceptoPolitica.checked ? "Sí" : "No",
+        aceptoGrupoWhatsapp: aceptoWhatsapp.checked ? "Sí" : "No"
+      };
+
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = "Guardando...";
       }
 
-      const carStageClone = document.getElementById("car-stage").cloneNode(true);
-      const specsClone = document.querySelector("#registro-section .specs-badge").cloneNode(true);
+      try {
+        await enviarAGoogleSheet(payload);
 
-      finalCarContainer.innerHTML = "";
-      finalCarContainer.appendChild(carStageClone);
-      finalCarContainer.appendChild(specsClone);
+        const carStageClone = document.getElementById("car-stage").cloneNode(true);
+        const specsClone = document.querySelector("#registro-section .specs-badge").cloneNode(true);
 
-      aplicarEstadoVehiculo(finalCarContainer, datosConfirmados);
+        finalCarContainer.innerHTML = "";
+        finalCarContainer.appendChild(carStageClone);
+        finalCarContainer.appendChild(specsClone);
 
-      confirmPhone.textContent = datosConfirmados.celular;
+        aplicarEstadoVehiculo(finalCarContainer, datosConfirmados);
 
-      registroSection.classList.add("hidden");
-      successSection.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+        if (confirmPhone) {
+          confirmPhone.textContent = datosConfirmados.celular;
+        }
 
-    } catch (error) {
-      alert("Ocurrió un error al registrar tus datos. Intenta nuevamente.");
-      btnSubmit.disabled = false;
-      btnSubmit.textContent = "Finalizar Registro ✓";
-    }
-  });
+        registroSection.classList.add("hidden");
+        successSection.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        console.error("Error al enviar registro:", error);
+        alert("Ocurrió un error al registrar tus datos. Intenta nuevamente.");
+        isSubmitting = false;
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = "Finalizar Registro ✓";
+        }
+      }
+    });
+  }
 
   actualizarVistaPrevia();
   actualizarEstadoPoliticas();
