@@ -28,17 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentStep = 0;
 
-  // Asegurar que la política inicie oculta hasta que el usuario oprima "Leer política ▼"
-  policyCollapsible.hidden = true;
+  // Mostrar política al oprimir "Leer política ▼" y guardarla al oprimir "Ocultar política ▲"
+  policyCollapsible.style.display = "none";
   togglePolicyBtn.setAttribute("aria-expanded", "false");
   togglePolicyBtn.textContent = "Leer política ▼";
 
-  togglePolicyBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const estaOculta = policyCollapsible.hidden;
-    policyCollapsible.hidden = !estaOculta;
-    togglePolicyBtn.setAttribute("aria-expanded", String(estaOculta));
-    togglePolicyBtn.textContent = estaOculta ? "Ocultar política ▲" : "Leer política ▼";
+  togglePolicyBtn.addEventListener("click", () => {
+    const estaGuardada = policyCollapsible.style.display === "none";
+    policyCollapsible.style.display = estaGuardada ? "block" : "none";
+    togglePolicyBtn.setAttribute("aria-expanded", String(estaGuardada));
+    togglePolicyBtn.textContent = estaGuardada ? "Ocultar política ▲" : "Leer política ▼";
   });
 
   // Habilitar el botón de avance solo cuando se aceptan ambas políticas
