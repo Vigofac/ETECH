@@ -1,0 +1,429 @@
+:root {
+  --bg-dark: #111518;
+  --card-bg: #1b2126;
+  --text-main: #f8f9fa;
+  --text-muted: #9aa5b1;
+  --accent: #00d2d3;
+  --accent-hover: #01a3a4;
+  --plate-yellow: #feca57;
+  --border-color: #2d353c;
+  --error-color: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: 40px;
+}
+
+.header {
+  text-align: center;
+  padding: 22px 16px 14px;
+}
+
+.header h1 {
+  font-size: 1.45rem;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.container {
+  max-width: 540px;
+  margin: 12px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Barra de progreso */
+.progress-wrapper {
+  margin-bottom: 16px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#step-indicator {
+  color: var(--accent);
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: #111518;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 20%;
+  background-color: var(--accent);
+  border-radius: 10px;
+  transition: width 0.35s ease;
+}
+
+/* Vista previa del vehículo */
+.preview-box {
+  background: radial-gradient(circle at center, #283139 0%, #14181c 100%);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  margin-bottom: 22px;
+  border: 1px solid #2a323a;
+}
+
+.car-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#duster-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+#car-body {
+  transition: fill 0.35s ease;
+}
+
+.license-plate {
+  background-color: var(--plate-yellow);
+  color: #111;
+  border: 3px solid #111;
+  border-radius: 6px;
+  padding: 3px 14px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  margin-top: -10px;
+}
+
+.plate-number {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.plate-country {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-top: -2px;
+}
+
+.specs-badge {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Transición entre pasos */
+.step {
+  display: none;
+  animation: fadeSlide 0.3s ease forwards;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.question-block {
+  margin-bottom: 16px;
+}
+
+.question-title {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.question-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.form-group {
+  margin-top: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 13px 14px;
+  background-color: #111518;
+  border: 1.5px solid #3a434c;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.05rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"] {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+}
+
+/* Selectores tipo píldora (Automática / Manual) */
+.pill-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pill-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #111518;
+  border: 1.5px solid #3a434c;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+
+.pill-option:has(input:checked) {
+  border-color: var(--accent);
+  background-color: rgba(0, 210, 211, 0.08);
+}
+
+.pill-option input {
+  accent-color: var(--accent);
+}
+
+/* Selector de Color */
+.color-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.color-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background-color: #111518;
+  border: 1.5px solid #3a434c;
+  padding: 14px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.color-option:has(input:checked) {
+  border-color: var(--accent);
+  background-color: rgba(0, 210, 211, 0.08);
+}
+
+.color-option input[type="radio"] {
+  display: none;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+}
+
+/* Política de Datos */
+.privacy-box {
+  background-color: rgba(0, 210, 211, 0.05);
+  border: 1px solid rgba(0, 210, 211, 0.25);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.privacy-box h3 {
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.privacy-box ul {
+  margin: 8px 0 10px 18px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.checkbox-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+/* Mensajes de validación */
+.error-msg {
+  color: var(--error-color);
+  font-size: 0.82rem;
+  min-height: 20px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* Botones de navegación */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #111;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  background-color: #495057;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1.5px solid #3a434c;
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+}
+
+.full-btn {
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Pantalla de éxito */
+.success-banner {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.check-icon {
+  width: 52px;
+  height: 52px;
+  background-color: #2ecc71;
+  color: #111;
+  font-size: 1.7rem;
+  font-weight: bold;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.success-banner h2 {
+  font-size: 1.3rem;
+  color: #2ecc71;
+}
+
+.welcome-text {
+  font-size: 1.1rem;
+  margin-top: 4px;
+  color: #fff;
+}
+
+.info-note {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}

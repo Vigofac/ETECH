@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunidad Duster E-Tech</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>COMUNIDAD DUSTER E-TECH</h1>
+    <p>Configura tu vehículo y únete al grupo oficial</p>
+  </header>
+
+  <main class="container">
+    
+    <!-- PANTALLA PRINCIPAL: VISTA PREVIA + PASOS UNO A UNO -->
+    <section id="registro-section" class="card">
+      
+      <!-- Barra de progreso -->
+      <div class="progress-wrapper">
+        <div class="progress-info">
+          <span id="step-indicator">Paso 1 de 5</span>
+          <span id="step-title">Autorización de Datos</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Vista previa gráfica en tiempo real -->
+      <div class="preview-box">
+        <div class="car-stage" id="car-stage">
+          <svg id="duster-svg" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="300" cy="225" rx="240" ry="14" fill="rgba(0,0,0,0.35)" />
+            <path d="M195 62 L380 62 L390 72 L185 72 Z" fill="#222" />
+            <rect x="210" y="65" width="155" height="5" fill="#777" />
+            <path id="car-body" d="M85 170 L95 125 L165 112 L215 70 L395 70 L455 112 L515 125 L525 175 L505 190 L95 190 Z" fill="#4b5842" stroke="#1a1a1a" stroke-width="3"/>
+            <path d="M220 78 L300 78 L300 112 L180 112 Z" fill="#1e272e" />
+            <path d="M312 78 L388 78 L435 112 L312 112 Z" fill="#1e272e" />
+            <path d="M402 82 L442 112 L415 112 Z" fill="#1e272e" />
+            <path d="M110 190 A42 42 0 0 1 194 190 Z" fill="#181818" />
+            <path d="M406 190 A42 42 0 0 1 490 190 Z" fill="#181818" />
+            <rect x="195" y="168" width="210" height="14" rx="4" fill="#222" />
+            <path d="M90 132 L115 132 L110 148 L88 145 Z" fill="#e74c3c" />
+            <path d="M495 130 L520 134 L518 148 L492 146 Z" fill="#f1c40f" />
+            <rect x="225" y="135" width="54" height="14" rx="3" fill="#111" />
+            <text x="252" y="145" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#00d2d3" text-anchor="middle">E-TECH</text>
+            <circle cx="152" cy="190" r="34" fill="#111" />
+            <circle cx="152" cy="190" r="20" fill="#bdc3c7" />
+            <circle cx="152" cy="190" r="8" fill="#2c3e50" />
+            <circle cx="448" cy="190" r="34" fill="#111" />
+            <circle cx="448" cy="190" r="20" fill="#bdc3c7" />
+            <circle cx="448" cy="190" r="8" fill="#2c3e50" />
+          </svg>
+
+          <div class="license-plate">
+            <span class="plate-number" id="preview-placa">ABC-123</span>
+            <span class="plate-country">COLOMBIA</span>
+          </div>
+        </div>
+
+        <div class="specs-badge">
+          <span id="preview-modelo">Duster E-Tech</span> • 
+          <span id="preview-transmision">Automática</span> • 
+          <span id="preview-color-name">Verde</span>
+        </div>
+      </div>
+
+      <!-- Formulario Paso a Paso -->
+      <form id="etech-form" novalidate>
+
+        <!-- PASO 1: POLÍTICA DE DATOS -->
+        <div class="step active" data-step="1" data-title="Autorización de Datos">
+          <div class="privacy-box">
+            <h3>Política de Manejo de Datos Personales</h3>
+            <p>
+              Conforme a la Ley 1581 de 2012, autorizas al administrador de la <strong>Comunidad Duster E-Tech</strong> para recolectar únicamente la <strong>placa de tu vehículo</strong> y tu <strong>número celular</strong>.
+            </p>
+            <ul>
+              <li><strong>Uso exclusivo:</strong> Validar tu vehículo E-Tech y agregarte al grupo oficial de WhatsApp de la comunidad.</li>
+              <li><strong>Privacidad:</strong> Tus datos nunca serán compartidos con terceros ni usados con fines comerciales.</li>
+            </ul>
+            <label class="checkbox-label">
+              <input type="checkbox" id="acepto-politica">
+              Acepto la Política de Manejo de Datos Personales.
+            </label>
+          </div>
+          <p class="error-msg" id="error-1"></p>
+          <div class="nav-buttons">
+            <button type="button" class="btn-primary next-btn">Comenzar →</button>
+          </div>
+        </div>
+
+        <!-- PASO 2: PLACA -->
+        <div class="step" data-step="2" data-title="Placa del Vehículo">
+          <div class="question-block">
+            <label class="question-title" for="placa">1. ¿Cuál es la placa de tu Duster?</label>
+            <p class="question-sub">Mírala reflejada en tiempo real en la imagen superior.</p>
+            <input type="text" id="placa" name="placa" placeholder="Ej: KLM123" maxlength="7" autocomplete="off">
+          </div>
+          <p class="error-msg" id="error-2"></p>
+          <div class="nav-buttons">
+            <button type="button" class="btn-secondary prev-btn">← Atrás</button>
+            <button type="button" class="btn-primary next-btn">Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- PASO 3: MODELO Y TRANSMISIÓN -->
+        <div class="step" data-step="3" data-title="Versión y Caja">
+          <div class="question-block">
+            <label class="question-title">2. Selecciona versión y transmisión</label>
+            <div class="form-group">
+              <label for="modelo">Versión E-Tech</label>
+              <select id="modelo" name="modelo">
+                <option value="Duster E-Tech">Duster E-Tech</option>
+                <option value="Duster E-Tech Hybrid 4x2">Duster E-Tech Hybrid 4x2</option>
+                <option value="Duster E-Tech Hybrid 4x4">Duster E-Tech Hybrid 4x4</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tipo de Caja</label>
+              <div class="pill-selector">
+                <label class="pill-option">
+                  <input type="radio" name="transmision" value="Automática" checked>
+                  <span>Automática</span>
+                </label>
+                <label class="pill-option">
+                  <input type="radio" name="transmision" value="Manual">
+                  <span>Manual</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="nav-buttons">
+            <button type="button" class="btn-secondary prev-btn">← Atrás</button>
+            <button type="button" class="btn-primary next-btn">Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- PASO 4: COLOR -->
+        <div class="step" data-step="4" data-title="Color del Vehículo">
+          <div class="question-block">
+            <label class="question-title">3. ¿De qué color es tu Duster?</label>
+            <p class="question-sub">Elige el tono para personalizar tu vehículo.</p>
+            <div class="color-selector">
+              <label class="color-option">
+                <input type="radio" name="color" value="Verde" data-hex="#4b5842" checked>
+                <span class="swatch" style="background-color: #4b5842;"></span>
+                Verde
+              </label>
+              <label class="color-option">
+                <input type="radio" name="color" value="Gris" data-hex="#6c757d">
+                <span class="swatch" style="background-color: #6c757d;"></span>
+                Gris
+              </label>
+              <label class="color-option">
+                <input type="radio" name="color" value="Beige" data-hex="#c8b89d">
+                <span class="swatch" style="background-color: #c8b89d;"></span>
+                Beige
+              </label>
+            </div>
+          </div>
+          <div class="nav-buttons">
+            <button type="button" class="btn-secondary prev-btn">← Atrás</button>
+            <button type="button" class="btn-primary next-btn">Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- PASO 5: CELULAR WHATSAPP -->
+        <div class="step" data-step="5" data-title="Contacto WhatsApp">
+          <div class="question-block">
+            <label class="question-title" for="celular">4. ¿Cuál es tu número de WhatsApp?</label>
+            <p class="question-sub">Te agregaremos al grupo oficial de la Comunidad E-Tech.</p>
+            <input type="tel" id="celular" name="celular" placeholder="Ej: 3001234567" maxlength="13">
+          </div>
+          <p class="error-msg" id="error-5"></p>
+          <div class="nav-buttons">
+            <button type="button" class="btn-secondary prev-btn">← Atrás</button>
+            <button type="submit" id="btn-submit" class="btn-primary">Finalizar Registro ✓</button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- PANTALLA FINAL: BIENVENIDA -->
+    <section id="success-section" class="card hidden">
+      <div class="success-banner">
+        <div class="check-icon">✓</div>
+        <h2>¡La información se elaboró exitosamente!</h2>
+        <p class="welcome-text">Bienvenid@ al grupo <strong>E-TECH</strong></p>
+      </div>
+
+      <div id="final-car-container" class="preview-box"></div>
+
+      <p class="info-note">
+        Pronto recibirás la invitación en tu WhatsApp (<strong id="confirm-phone"></strong>) para unirte oficialmente al grupo.
+      </p>
+
+      <button type="button" onclick="location.reload()" class="btn-secondary full-btn">Registrar otro vehículo</button>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
