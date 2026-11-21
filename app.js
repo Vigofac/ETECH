@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const celularInput = document.getElementById("celular");
   const aceptoCheck = document.getElementById("acepto-politica");
 
-  const previewPlaca = document.getElementById("preview-placa");
+  const svgPlateText = document.getElementById("svg-plate-text");
   const previewModelo = document.getElementById("preview-modelo");
   const previewTransmision = document.getElementById("preview-transmision");
   const previewColorName = document.getElementById("preview-color-name");
-  const carBody = document.getElementById("car-body");
+  const carPaintElements = document.querySelectorAll(".car-paint");
 
   const form = document.getElementById("etech-form");
   const btnSubmit = document.getElementById("btn-submit");
@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     stepIndicator.textContent = `Paso ${stepNum} de ${totalSteps}`;
     stepTitle.textContent = steps[index].getAttribute("data-title");
 
-    // Enfocar automáticamente el campo de texto si el paso tiene uno
     const input = steps[index].querySelector('input[type="text"], input[type="tel"]');
     if (input) setTimeout(() => input.focus(), 150);
   }
@@ -80,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  // Botones Siguiente y Atrás
   document.querySelectorAll(".next-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (validateStep(currentStep)) {
@@ -99,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Permitir avanzar con la tecla Enter en inputs de texto
   form.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && currentStep < steps.length - 1) {
       e.preventDefault();
@@ -110,36 +107,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Vista previa en tiempo real: Placa
+  // Actualizar placa integrada en el parachoques delantero
   placaInput.addEventListener("input", () => {
     let val = placaInput.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
     if (val.length > 3) {
       val = val.slice(0, 3) + "-" + val.slice(3, 6);
     }
-    previewPlaca.textContent = val || "ABC-123";
+    svgPlateText.textContent = val || "ABC-123";
   });
 
-  // Vista previa en tiempo real: Modelo
+  // Actualizar modelo
   modeloSelect.addEventListener("change", () => {
     previewModelo.textContent = modeloSelect.value;
   });
 
-  // Vista previa en tiempo real: Transmisión
+  // Actualizar transmisión
   transmisionRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
       previewTransmision.textContent = e.target.value;
     });
   });
 
-  // Vista previa en tiempo real: Color (Verde, Gris o Beige)
+  // Actualizar color en carrocería y espejos retrovisores (Verde, Gris o Beige)
   colorRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
-      carBody.setAttribute("fill", e.target.getAttribute("data-hex"));
+      const hex = e.target.getAttribute("data-hex");
+      carPaintElements.forEach((el) => el.setAttribute("fill", hex));
       previewColorName.textContent = e.target.value;
     });
   });
 
-  // Envío final hacia Google Drive
+  // Envío hacia Google Drive
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!validateStep(currentStep)) return;
@@ -149,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const payload = {
       fecha: new Date().toLocaleString("es-CO"),
-      placa: previewPlaca.textContent,
+      placa: svgPlateText.textContent,
       modelo: modeloSelect.value,
       transmision: selectedTransmision,
       color: selectedColor,
@@ -170,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Clonar el gráfico personalizado (auto + color + placa) a la pantalla final
+      // Clonar el gráfico frontal personalizado a la pantalla de bienvenida
       const carStageClone = document.getElementById("car-stage").cloneNode(true);
       const specsClone = document.querySelector(".specs-badge").cloneNode(true);
       finalCarContainer.innerHTML = "";
