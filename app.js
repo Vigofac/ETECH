@@ -1,5 +1,5 @@
 // REEMPLAZA ESTA URL CON LA URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT (termina en /exec)
-const GOOGLE_SCRIPT_URL = "https://docs.google.com/spreadsheets/d/1ruOaedMsP2bzsv0MLb8zL73srTuI5AmRnCW2c8V6Yxs/edit?gid=1046268606#gid=1046268606";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIK3tRvetfkkH5CiJooWThlz6O_ZzRCOFdOw9vJy3dI2xBVgptBZh-scp_jGVyYDSlgA/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const steps = document.querySelectorAll(".step");
