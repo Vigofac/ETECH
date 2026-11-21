@@ -1,5 +1,5 @@
 // REEMPLAZA ESTA URL CON LA URL DE TU GOOGLE APPS SCRIPT
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/TU_ID_DE_IMPLEMENTACION/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2lO5tEABYSYKS4p5Tb2OkzNaJhpTahlKQsx1IjSKLQkLoxMGofJw7Q4KVw8jqHptiaQ/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const steps = document.querySelectorAll(".step");
