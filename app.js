@@ -28,11 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentStep = 0;
 
-  // Desplegar u ocultar el texto completo de la política
-  togglePolicyBtn.addEventListener("click", () => {
-    const isOpen = policyCollapsible.classList.toggle("open");
-    togglePolicyBtn.setAttribute("aria-expanded", String(isOpen));
-    togglePolicyBtn.textContent = isOpen ? "Ocultar texto ▲" : "Leer política ▼";
+  // Asegurar que la política inicie oculta hasta que el usuario oprima "Leer política ▼"
+  policyCollapsible.hidden = true;
+  togglePolicyBtn.setAttribute("aria-expanded", "false");
+  togglePolicyBtn.textContent = "Leer política ▼";
+
+  togglePolicyBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const estaOculta = policyCollapsible.hidden;
+    policyCollapsible.hidden = !estaOculta;
+    togglePolicyBtn.setAttribute("aria-expanded", String(estaOculta));
+    togglePolicyBtn.textContent = estaOculta ? "Ocultar política ▲" : "Leer política ▼";
   });
 
   // Habilitar el botón de avance solo cuando se aceptan ambas políticas
@@ -201,7 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
       transmision: datosConfirmados.transmision,
       color: datosConfirmados.color.nombre,
       celular: datosConfirmados.celular,
-      aceptoPolitica: aceptoPolitica.checked && aceptoWhatsapp.checked ? "Sí" : "No"
+      aceptoPoliticaDatos: aceptoPolitica.checked ? "Sí" : "No",
+      aceptoGrupoWhatsapp: aceptoWhatsapp.checked ? "Sí" : "No"
     };
 
     btnSubmit.disabled = true;
