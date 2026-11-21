@@ -46,10 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. Habilitar avance solo si ambas políticas están aceptadas
   function actualizarEstadoPoliticas() {
-    const ambasAceptadas = Boolean(aceptoPolitica && aceptoWhatsapp && aceptoPolitica.checked && aceptoWhatsapp.checked);
+    const ambasAceptadas = Boolean(
+      aceptoPolitica &&
+      aceptoWhatsapp &&
+      aceptoPolitica.checked &&
+      aceptoWhatsapp.checked
+    );
+
     if (btnComenzar) {
       btnComenzar.disabled = !ambasAceptadas;
     }
+
     if (ambasAceptadas) {
       const err1 = document.getElementById("error-1");
       if (err1) err1.textContent = "";
@@ -84,10 +91,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function aplicarEstadoVehiculo(container, datosOverride = null) {
     if (!container) return;
 
-    const placa = datosOverride ? datosOverride.placa : formatearPlaca(placaInput ? placaInput.value : "");
+    const placa = datosOverride
+      ? datosOverride.placa
+      : formatearPlaca(placaInput ? placaInput.value : "");
     const color = datosOverride ? datosOverride.color : obtenerColorActual();
     const transmision = datosOverride ? datosOverride.transmision : obtenerTransmisionActual();
-    const modelo = datosOverride ? datosOverride.modelo : (modeloSelect ? modeloSelect.value : "Duster E-Tech");
+    const modelo = datosOverride
+      ? datosOverride.modelo
+      : (modeloSelect ? modeloSelect.value : "Duster E-Tech");
 
     const svg = container.querySelector("svg");
     if (svg) {
