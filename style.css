@@ -193,10 +193,6 @@ body {
   margin-bottom: 14px;
 }
 
-.policy-collapsible[hidden] {
-  display: none;
-}
-
 .policy-scroll-box {
   max-height: 340px;
   overflow-y: auto;
