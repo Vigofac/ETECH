@@ -1,5 +1,5 @@
 // REEMPLAZA ESTA URL CON LA URL DE TU GOOGLE APPS SCRIPT
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2lO5tEABYSYKS4p5Tb2OkzNaJhpTahlKQsx1IjSKLQkLoxMGofJw7Q4KVw8jqHptiaQ/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/TU_ID_DE_IMPLEMENTACION/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const steps = document.querySelectorAll(".step");
@@ -7,12 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepIndicator = document.getElementById("step-indicator");
   const stepTitle = document.getElementById("step-title");
 
+  const togglePolicyBtn = document.getElementById("toggle-policy-btn");
+  const policyCollapsible = document.getElementById("policy-collapsible");
+  const aceptoPolitica = document.getElementById("acepto-politica");
+  const aceptoWhatsapp = document.getElementById("acepto-whatsapp");
+  const btnComenzar = document.getElementById("btn-comenzar");
+
   const placaInput = document.getElementById("placa");
   const modeloSelect = document.getElementById("modelo");
   const transmisionRadios = document.querySelectorAll('input[name="transmision"]');
   const colorRadios = document.querySelectorAll('input[name="color"]');
   const celularInput = document.getElementById("celular");
-  const aceptoCheck = document.getElementById("acepto-politica");
 
   const form = document.getElementById("etech-form");
   const btnSubmit = document.getElementById("btn-submit");
@@ -22,6 +27,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmPhone = document.getElementById("confirm-phone");
 
   let currentStep = 0;
+
+  // Desplegar u ocultar el texto completo de la política
+  togglePolicyBtn.addEventListener("click", () => {
+    const isOpen = policyCollapsible.classList.toggle("open");
+    togglePolicyBtn.setAttribute("aria-expanded", String(isOpen));
+    togglePolicyBtn.textContent = isOpen ? "Ocultar texto ▲" : "Leer política ▼";
+  });
+
+  // Habilitar el botón de avance solo cuando se aceptan ambas políticas
+  function actualizarEstadoPoliticas() {
+    const ambasAceptadas = aceptoPolitica.checked && aceptoWhatsapp.checked;
+    btnComenzar.disabled = !ambasAceptadas;
+    if (ambasAceptadas) {
+      document.getElementById("error-1").textContent = "";
+    }
+  }
+
+  aceptoPolitica.addEventListener("change", actualizarEstadoPoliticas);
+  aceptoWhatsapp.addEventListener("change", actualizarEstadoPoliticas);
 
   function formatearPlaca(raw) {
     let val = (raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -95,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateStep(index) {
     if (index === 0) {
       const err1 = document.getElementById("error-1");
-      if (!aceptoCheck.checked) {
-        err1.textContent = "Debes aceptar la política de manejo de datos para continuar.";
+      if (!aceptoPolitica.checked || !aceptoWhatsapp.checked) {
+        err1.textContent = "Debes aceptar ambas políticas para continuar con el registro.";
         return false;
       }
       err1.textContent = "";
@@ -177,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
       transmision: datosConfirmados.transmision,
       color: datosConfirmados.color.nombre,
       celular: datosConfirmados.celular,
-      aceptoPolitica: aceptoCheck.checked ? "Sí" : "No"
+      aceptoPolitica: aceptoPolitica.checked && aceptoWhatsapp.checked ? "Sí" : "No"
     };
 
     btnSubmit.disabled = true;
@@ -200,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
       finalCarContainer.appendChild(carStageClone);
       finalCarContainer.appendChild(specsClone);
 
-      // Aplicar explícitamente los valores confirmados en la pantalla final
       aplicarEstadoVehiculo(finalCarContainer, datosConfirmados);
 
       confirmPhone.textContent = datosConfirmados.celular;
@@ -217,4 +240,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   actualizarVistaPrevia();
+  actualizarEstadoPoliticas();
 });
